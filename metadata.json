@@ -1,0 +1,6 @@
+{
+  "name": "Otomotiv Şikayet & Servis Analisti",
+  "description": "Otomotiv satış sonrası ve servis operasyonlarında kronik arıza, maliyet kontrolü, filo ve motor kırılımlı serbest metin NLP analitiği sunan yapay zeka analiz platformu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
