@@ -1295,6 +1295,86 @@ export const INITIAL_COMPLAINTS: ComplaintItem[] = [
     status: "Servise Rücu Edildi",
     isMisdiagnosisFlagged: false,
     isWorkmanshipFaultFlagged: true,
+  },
+
+  // 36. Renault Megane IV - Hararet Yapan Araç Hakkında Bilgi Verilmemesi (İnsani / Servis İletişimi)
+  {
+    id: "CMP-1036",
+    recordNumber: "SRV-2024-8836",
+    date: "2024-06-02",
+    brand: "Renault",
+    model: "Megane IV",
+    modelYear: 2023,
+    engineType: "1.3 TCe",
+    fuelType: "Benzin",
+    transmission: "Otomatik",
+    km: 48500,
+    kmRange: "30.000 - 60.000 KM",
+    plate: "34 MEG 402",
+    chassisNo: "VF1RFB00868199120",
+    fleetCompany: "Hedef Filo",
+    serviceName: "Kartal Özel Servis - İst.",
+    serviceCity: "İstanbul",
+    complaintSubject: "Hararet yapan araç hakkında filoya ve sürücüye günlerce bilgi verilmemesi",
+    rawComplaintText: "Filo aracı yolda hararet uyarısı verip çekiciyle servise çekildi. 4 gün boyunca araç akıbeti hakkında ne sürücüye ne de filo yöneticisine bilgi verilmedi. Telefonlara bakılmadı, sonrasında onaysız parça değişimiyle fahiş fatura düzenlendi.",
+    technicianNotes: "Servis müşteri kabul ve danışman birimi tarafından filo bilgilendirme ve onay protokolü işletilmemiş. İletişim kopukluğu ve onaysız işlem nedeniyle filo tarafından itiraz açıldı.",
+    faultCategory: "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri",
+    mainHeader: "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri",
+    subTopic: "Hararet Yapan Araç Hakkında Bilgi Verilmemesi",
+    complaintReason: "Hararet Yapan Araç Hakkında Bilgi Verilmemesi",
+    rootCauseType: "Servis Süreci & İletişim Kusuru",
+    financials: {
+      operationCost: 14000,
+      invoicedCost: 32500,
+      difference: 18500,
+      disputedAmount: 18500,
+      coverageType: "İtirazlı / Askıda",
+    },
+    severity: "Yüksek",
+    chronicRiskScore: 30,
+    status: "Mali İtiraz Açıldı",
+    isMisdiagnosisFlagged: true,
+    isWorkmanshipFaultFlagged: false,
+  },
+
+  // 37. Peugeot 3008 - Servis Durumu Hakkında Bilgi Verilmemesi (İnsani / İletişim Eksikliği)
+  {
+    id: "CMP-1037",
+    recordNumber: "SRV-2024-8837",
+    date: "2024-06-10",
+    brand: "Peugeot",
+    model: "3008",
+    modelYear: 2022,
+    engineType: "1.5 BlueHDi",
+    fuelType: "Dizel",
+    transmission: "Otomatik",
+    km: 62000,
+    kmRange: "60.000 - 100.000 KM",
+    plate: "34 PEU 819",
+    chassisNo: "VF3MCYHZRMS310294",
+    fleetCompany: "LeasePlan / Ayvens",
+    serviceName: "Maslak Yetkili Servis - İst.",
+    serviceCity: "İstanbul",
+    complaintSubject: "Araç onarım süreci hakkında geri bildirim verilmemesi ve ilgisizlik",
+    rawComplaintText: "Aracın durumuyla ilgili 3 iş günü boyunca hiçbir bilgilendirme yapılmadı. Filo saha sorumlusu defalarca aramasına rağmen danışmana ulaşılamadı.",
+    technicianNotes: "Servis danışmanı iş yoğunluğu gerekçesiyle SLA bilgilendirme kurallarını ihlal etmiş. İletişim kusuru raporlandı.",
+    faultCategory: "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri",
+    mainHeader: "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri",
+    subTopic: "Araç Durumu Hakkında Bilgi Verilmemesi & İletişimsizlik",
+    complaintReason: "Araç Durumu Hakkında Bilgi Verilmemesi & İletişimsizlik",
+    rootCauseType: "Servis Süreci & İletişim Kusuru",
+    financials: {
+      operationCost: 8500,
+      invoicedCost: 12000,
+      difference: 3500,
+      disputedAmount: 3500,
+      coverageType: "İtirazlı / Askıda",
+    },
+    severity: "Orta",
+    chronicRiskScore: 20,
+    status: "Mali İtiraz Açıldı",
+    isMisdiagnosisFlagged: false,
+    isWorkmanshipFaultFlagged: false,
   }
 ];
 
@@ -1304,7 +1384,20 @@ function enrichWithMandatoryKLColumns(item: ComplaintItem): ComplaintItem {
 
   if (!kHeader || kHeader.startsWith("SRV-") || kHeader.startsWith("CMP-") || /^\d+$/.test(kHeader)) {
     const text = `${item.complaintSubject || ""} ${item.rawComplaintText || ""} ${item.faultCategory || ""}`.toLowerCase();
-    if (text.includes("yağ") || text.includes("külbütör") || text.includes("karter") || text.includes("sızıntı")) {
+    if (
+      text.includes("bilgi verilme") ||
+      text.includes("bilgilendirme") ||
+      text.includes("iletişim") ||
+      text.includes("habersiz") ||
+      text.includes("onaysız") ||
+      text.includes("müşteri")
+    ) {
+      kHeader = "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri";
+      lTopic =
+        text.includes("hararet")
+          ? "Hararet Yapan Araç Hakkında Bilgi Verilmemesi"
+          : lTopic || "Araç Durumu Hakkında Bilgi Verilmemesi & İletişimsizlik";
+    } else if (text.includes("yağ") || text.includes("külbütör") || text.includes("karter") || text.includes("sızıntı")) {
       kHeader = "Motor & Yağlama Sistemi";
       lTopic = lTopic || "Külbütör Kapağı Yağ Sızıntısı";
     } else if (text.includes("zincir") || text.includes("triger") || text.includes("eksantrik")) {

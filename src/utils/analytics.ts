@@ -40,6 +40,47 @@ export function standardizeFaultCategory(
 ): FaultCategory {
   const text = `${mainHeader || ""} ${subTopic || ""} ${subject || ""}`.toLowerCase();
 
+  // 1. İnsani, Servis İletişimi & Müşteri Hizmetleri / Bilgilendirme Kusurları
+  // Mekanik terimler (hararet, motor, şanzıman vb.) geçse dahi "bilgi verilmemesi",
+  // "habersiz işlem", "iletişimsizlik" gibi insani süreç kusurları önceliklidir.
+  if (
+    text.includes("bilgi verilme") ||
+    text.includes("bilgilendirme") ||
+    text.includes("bilgi aktar") ||
+    text.includes("bilgi yok") ||
+    text.includes("bilgi alam") ||
+    text.includes("haber verilme") ||
+    text.includes("habersiz") ||
+    text.includes("onaysız") ||
+    text.includes("onaysiz") ||
+    text.includes("iletişim") ||
+    text.includes("iletisim") ||
+    text.includes("ulaşılam") ||
+    text.includes("ulasilam") ||
+    text.includes("muhatap") ||
+    text.includes("cevap verilme") ||
+    text.includes("geri dönüş") ||
+    text.includes("geri donus") ||
+    text.includes("müşteri ilişk") ||
+    text.includes("musteri ilisk") ||
+    text.includes("müşteri hizmet") ||
+    text.includes("musteri hizmet") ||
+    text.includes("hizmet kalitesi") ||
+    text.includes("ilgisiz") ||
+    text.includes("tavır") ||
+    text.includes("tavir") ||
+    text.includes("davranış") ||
+    text.includes("davranis") ||
+    text.includes("kaba") ||
+    text.includes("personel hatası") ||
+    text.includes("açıklama yapılma") ||
+    text.includes("aciklama yapilma") ||
+    text.includes("rapor verilme") ||
+    text.includes("teslimat gecik")
+  ) {
+    return "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri";
+  }
+
   if (
     text.includes("şanzıman") ||
     text.includes("vites") ||
@@ -141,6 +182,19 @@ export function standardizeFaultCategory(
     text.includes("sensör")
   ) {
     return "Elektrik, Elektronik & Beyin (ECU)";
+  }
+
+  if (
+    text.includes("kaporta") ||
+    text.includes("boya") ||
+    text.includes("tampon") ||
+    text.includes("trim") ||
+    text.includes("gövde") ||
+    text.includes("govde") ||
+    text.includes("kilit") ||
+    text.includes("cam")
+  ) {
+    return "Gövde, Trim & Kaporta";
   }
 
   // Varsayılan Motor / Yağ

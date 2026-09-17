@@ -11,7 +11,9 @@ export type FaultCategory =
   | "Fren & Süspansiyon / Yürür Aksam"
   | "Soğutma Sistemi & Termostat"
   | "Triger & Kayış Grubu"
-  | "Klima & Havalandırma";
+  | "Klima & Havalandırma"
+  | "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri"
+  | "Gövde, Trim & Kaporta";
 
 export type RootCauseType =
   | "Kronik Üretici Arızası"
@@ -19,7 +21,8 @@ export type RootCauseType =
   | "Hatalı Arıza Tespiti & Yanlış Parça Değişimi"
   | "Kullanıcı / Filo Sürüş Hatası"
   | "Periyodik Bakım İhmali"
-  | "Normal Aşınma / Yıpranma";
+  | "Normal Aşınma / Yıpranma"
+  | "Servis Süreci & İletişim Kusuru";
 
 export type SeverityLevel = "Kritik" | "Yüksek" | "Orta" | "Düşük";
 

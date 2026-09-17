@@ -235,6 +235,9 @@ export function calculateMajorFaultRisk(
   } else if (majorFaultCategory.includes("Elektrik") || majorFaultCategory.includes("Elektronik")) {
     preventiveAction = "Akü voltaj dalgalanmaları ve CAN-Bus iletişim hataları diagnostik cihazla taranmalı; haksız beyin değişim talepleri itiraza yönlendirilmelidir.";
     actionTag = "ECU & CAN-Bus Diagnostik Tarama";
+  } else if (majorFaultCategory.includes("İletişim") || majorFaultCategory.includes("Bilgilendirme") || majorFaultCategory.includes("Müşteri")) {
+    preventiveAction = "Servis kabul ve teslimat süreçlerinde sürücü/filo bilgilendirme protokolleri zorunlu tutulmalı; hararet ve acil arızalarda onaysız işlem veya bilgi verilmemesi durumunda servis SLA cezası ve fatura itiraz mekanizması işletilmelidir.";
+    actionTag = "Servis SLA & Bilgilendirme Protokolü";
   }
 
   return {

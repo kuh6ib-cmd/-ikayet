@@ -309,6 +309,40 @@ export function normalizeMainHeader(header: string, fallbackSubject: string = ""
 
   const raw = toTurkishLower(clean);
 
+  // 1. İnsani, Servis İletişimi & Müşteri Hizmetleri / Bilgilendirme Kusurları (Öncelikli)
+  if (
+    raw.includes("bilgi verilme") ||
+    raw.includes("bilgilendirme") ||
+    raw.includes("bilgi yok") ||
+    raw.includes("bilgi alam") ||
+    raw.includes("haber verilme") ||
+    raw.includes("habersiz") ||
+    raw.includes("onaysız") ||
+    raw.includes("onaysiz") ||
+    raw.includes("iletişim") ||
+    raw.includes("iletisim") ||
+    raw.includes("ulaşılam") ||
+    raw.includes("ulasilam") ||
+    raw.includes("muhatap") ||
+    raw.includes("cevap verilme") ||
+    raw.includes("geri dönüş") ||
+    raw.includes("geri donus") ||
+    raw.includes("müşteri") ||
+    raw.includes("musteri") ||
+    raw.includes("hizmet kalitesi") ||
+    raw.includes("ilgisiz") ||
+    raw.includes("tavır") ||
+    raw.includes("tavir") ||
+    raw.includes("davranış") ||
+    raw.includes("davranis") ||
+    raw.includes("personel") ||
+    raw.includes("açıklama yapılma") ||
+    raw.includes("aciklama yapilma") ||
+    raw.includes("rapor verilme")
+  ) {
+    return "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri";
+  }
+
   if (raw.includes("yağ") || raw.includes("yag") || raw.includes("külbütör") || raw.includes("kulbutor") || raw.includes("karter") || (raw.includes("motor") && (raw.includes("sız") || raw.includes("kaçak") || raw.includes("kacak")))) {
     return "Motor & Yağlama Sistemi";
   }
@@ -357,6 +391,30 @@ export function normalizeMainHeader(header: string, fallbackSubject: string = ""
  */
 function deriveMainHeaderFromText(text: string): string {
   const raw = toTurkishLower(text);
+  if (
+    raw.includes("bilgi verilme") ||
+    raw.includes("bilgilendirme") ||
+    raw.includes("bilgi yok") ||
+    raw.includes("bilgi alam") ||
+    raw.includes("haber verilme") ||
+    raw.includes("habersiz") ||
+    raw.includes("onaysız") ||
+    raw.includes("onaysiz") ||
+    raw.includes("iletişim") ||
+    raw.includes("iletisim") ||
+    raw.includes("ulaşılam") ||
+    raw.includes("ulasilam") ||
+    raw.includes("muhatap") ||
+    raw.includes("cevap verilme") ||
+    raw.includes("geri dönüş") ||
+    raw.includes("müşteri") ||
+    raw.includes("ilgisiz") ||
+    raw.includes("tavır") ||
+    raw.includes("davranış") ||
+    raw.includes("personel")
+  ) {
+    return "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri";
+  }
   if (raw.includes("yağ") || raw.includes("yag") || raw.includes("külbütör") || raw.includes("karter") || raw.includes("sızıntı")) return "Motor & Yağlama Sistemi";
   if (raw.includes("şanzıman") || raw.includes("kavrama") || raw.includes("dsg") || raw.includes("edc") || raw.includes("vites") || raw.includes("mekatronik")) return "Şanzıman & Çift Kavrama";
   if (raw.includes("termostat") || raw.includes("antifriz") || raw.includes("soğutma") || raw.includes("hararet") || raw.includes("radyatör")) return "Soğutma & Termostat Sistemi";
@@ -368,6 +426,7 @@ function deriveMainHeaderFromText(text: string): string {
   if (raw.includes("klima") || raw.includes("kompresör") || raw.includes("soğutmuyor")) return "Klima & İklimlendirme";
   if (raw.includes("turbo") || raw.includes("intercooler") || raw.includes("hortum")) return "Turbo & Emiş Sistemi";
   if (raw.includes("enjektör") || raw.includes("yakıt") || raw.includes("pompa")) return "Yakıt & Enjeksiyon Sistemi";
+  if (raw.includes("kaporta") || raw.includes("boya") || raw.includes("trim") || raw.includes("gövde")) return "Gövde, Trim & Kaporta";
   return "Motor & Mekanik Sistemler";
 }
 
@@ -381,6 +440,36 @@ export function normalizeSubTopic(topic: string, mainHeaderHint?: string): strin
   }
 
   const raw = toTurkishLower(clean);
+
+  // İnsani, Servis İletişimi & Müşteri Süreç Konuları
+  if (
+    raw.includes("hararet") &&
+    (raw.includes("bilgi") || raw.includes("haber") || raw.includes("iletisim") || raw.includes("iletişim"))
+  ) {
+    return "Hararet Yapan Araç Hakkında Bilgi Verilmemesi";
+  }
+  if (
+    raw.includes("bilgi verilme") ||
+    raw.includes("bilgilendirme yapılma") ||
+    raw.includes("bilgi aktar") ||
+    raw.includes("bilgi alam") ||
+    raw.includes("haber verilme") ||
+    raw.includes("durum bilgisi")
+  ) {
+    return "Araç Durumu Hakkında Bilgi Verilmemesi & İletişimsizlik";
+  }
+  if (raw.includes("onaysız") || raw.includes("onaysiz") || raw.includes("habersiz")) {
+    return "Onaysız / Habersiz Servis İşlemi & Bilgilendirme Eksikliği";
+  }
+  if (raw.includes("ulaşılam") || raw.includes("ulasilam") || raw.includes("muhatap") || raw.includes("telefon")) {
+    return "Servise Ulaşılamaması & Cevapsız Çağrı";
+  }
+  if (raw.includes("ilgisiz") || raw.includes("tavır") || raw.includes("tavir") || raw.includes("davranış") || raw.includes("kaba")) {
+    return "Personel İlgisizliği & Müşteri Şikayeti";
+  }
+  if (raw.includes("teslimat gecik") || raw.includes("bekletilme")) {
+    return "Teslimat Gecikmesi & Süreç Bilgisi Verilmemesi";
+  }
 
   if (raw.includes("külbütör") || (raw.includes("yağ") && raw.includes("kaçak"))) return "Külbütör Kapağı Yağ Sızıntısı";
   if (raw.includes("eksantrik") || (raw.includes("zincir") && raw.includes("ses"))) return "Eksantrik Zincir Aşınması & Ses";

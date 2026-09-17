@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   DollarSign,
   Search,
+  MessageSquareWarning,
 } from "lucide-react";
 import { ComplaintItem } from "../types";
 
@@ -191,9 +192,18 @@ export const ComplaintsTable: React.FC<ComplaintsTableProps> = ({
                 {/* K Sütunu (Ana Başlık) & L Sütunu (Konu) */}
                 <td className="py-4 max-w-xs">
                   <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                    <span className="inline-block rounded px-2 py-0.5 text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                      {item.mainHeader && !item.mainHeader.startsWith("SRV-") ? item.mainHeader : item.faultCategory}
-                    </span>
+                    {item.faultCategory === "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri" ||
+                    item.mainHeader?.includes("İletişim") ||
+                    item.mainHeader?.includes("Bilgilendirme") ? (
+                      <span className="inline-flex items-center gap-1 rounded px-2 py-0.5 text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-300 shadow-2xs">
+                        <MessageSquareWarning className="w-3 h-3 text-amber-600 shrink-0" />
+                        <span>{item.mainHeader && !item.mainHeader.startsWith("SRV-") ? item.mainHeader : item.faultCategory}</span>
+                      </span>
+                    ) : (
+                      <span className="inline-block rounded px-2 py-0.5 text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        {item.mainHeader && !item.mainHeader.startsWith("SRV-") ? item.mainHeader : item.faultCategory}
+                      </span>
+                    )}
                   </div>
                   <div className="font-semibold text-slate-800 text-xs">
                     {item.subTopic || item.complaintReason || item.complaintSubject}

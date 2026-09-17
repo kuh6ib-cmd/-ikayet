@@ -281,13 +281,16 @@ Servise Fatura Edilen Tutar: ${complaint.financials?.invoicedCost} TL
 Fark (Sapma): ${complaint.financials?.difference} TL
 Kapsam: ${complaint.financials?.coverageType}
 
+ÖNEMLİ SINIFLANDIRMA KURALI:
+Eğer şikayet hararet yapan araç hakkında bilgi verilmemesi, müşteriye/filoya haber verilmemesi, servis ilgisizliği, cevapsız çağrı, onaysız işlem yapılması gibi insani ve süreçsel iletişim kusurlarını içeriyorsa, faultCategory olarak mekanik sistemler yerine mutlaka "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri" seçilmelidir.
+
 Lütfen aşağıdaki JSON formatında teknik ve finansal teşhis sonucu üret:
 {
-  "rootCauseAssessment": "Teknik kök neden analizi (detaylı)",
-  "faultCategory": "Motor Hasarı & Yağ Kaçağı | Şanzıman & Debriyaj | Turbo & Emme | AdBlue/DPF | Elektrik & ECU | Yürür Aksam | Soğutma | Diğer",
+  "rootCauseAssessment": "Teknik veya süreçsel kök neden analizi (detaylı)",
+  "faultCategory": "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri | Motor Hasarı & Yağ Kaçağı | Şanzıman & Debriyaj (DSG/EDC/EAT) | Turbo & Emme Sistemi | AdBlue, DPF & Egzoz Emisyon | Elektrik, Elektronik & Beyin (ECU) | Fren & Süspansiyon / Yürür Aksam | Soğutma Sistemi & Termostat | Diğer",
   "isChronicIssue": true/false,
   "chronicProbability": 0-100 (sayı),
-  "workmanshipQuality": "Hatalı Montaj Şüphesi | Hatalı Arıza Tespiti | Standart İşçilik | Kullanıcı Hatası",
+  "workmanshipQuality": "Servis Süreci & İletişim Kusuru | Hatalı Montaj Şüphesi | Hatalı Arıza Tespiti | Standart İşçilik | Kullanıcı Hatası",
   "pricingEvaluation": {
     "isFair": true/false,
     "overchargeRisk": "Yüksek Fatura Şişirme Riski | Makul | Düşük",
@@ -295,10 +298,10 @@ Lütfen aşağıdaki JSON formatında teknik ve finansal teşhis sonucu üret:
     "auditNote": "Fatura ve parça/işçilik değerlendirmesi"
   },
   "technicalAdvice": [
-    "Teknik tavsiye 1",
-    "Teknik tavsiye 2"
+    "Teknik veya idari tavsiye 1",
+    "Teknik veya idari tavsiye 2"
   ],
-  "warrantyVerdict": "Tam Garanti | Garanti Reddi (Kullanıcı Kusuru) | Servise İşçilik Rücusu | Kısmi Distribütör Desteği (Goodwill)"
+  "warrantyVerdict": "Tam Garanti | Garanti Reddi (Kullanıcı Kusuru) | Servise İşçilik Rücusu | Servis SLA Cezası & Fatura İtirazı | Kısmi Distribütör Desteği (Goodwill)"
 }`;
 
       const response = await ai.models.generateContent({
@@ -340,13 +343,16 @@ Lütfen aşağıdaki JSON formatında teknik ve finansal teşhis sonucu üret:
       const prompt = `Aşağıdaki otomotiv serbest metin şikayetlerini ve teknisyen notlarını NLP ile incele ve sınıflandır:
 ${JSON.stringify(textSnippets, null, 2)}
 
+ÖNEMLİ KURAL:
+Hararet yapan araç hakkında bilgi verilmemesi, müşteriye/filoya haber verilmemesi, servis ilgisizliği, ulaşılamama, onaysız işlem yapılması gibi durumları mekanik arıza kategorisinde değil; kesinlikle "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri" kategorisinde sınıflandır.
+
 Her kayıt için JSON dizisi döndür:
 [
   {
     "id": "kayıt id",
-    "category": "Motor Hasarı & Yağ Kaçağı | Şanzıman & Debriyaj | Turbo & Emme | AdBlue, DPF & Egzoz | Elektrik & ECU | Fren & Yürür Aksam | Soğutma",
+    "category": "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri | Motor Hasarı & Yağ Kaçağı | Şanzıman & Debriyaj (DSG/EDC/EAT) | Turbo & Emme Sistemi | AdBlue, DPF & Egzoz Emisyon | Elektrik, Elektronik & Beyin (ECU) | Fren & Süspansiyon / Yürür Aksam | Soğutma Sistemi & Termostat | Diğer",
     "sentiment": "Çok Kızgın / Kritik | Normal Şikayet | Hafif Memnuniyetsizlik",
-    "detectedFault": "Tespit edilen somut teknik arıza",
+    "detectedFault": "Tespit edilen somut teknik veya iletişimsel arıza / problem",
     "isMisdiagnosisRisk": true/false (Servisin yanlış arıza tespiti yapıp sağlam parçayı değiştirme riski),
     "urgencyScore": 1-100
   }

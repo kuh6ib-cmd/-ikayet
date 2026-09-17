@@ -15,6 +15,7 @@ import {
   ArrowRight,
   ShieldCheck,
   AlertCircle,
+  MessageSquareWarning,
 } from "lucide-react";
 import { ComplaintItem } from "../types";
 
@@ -119,16 +120,34 @@ export const ComplaintDetailModal: React.FC<ComplaintDetailModalProps> = ({
             </div>
 
             {/* Şikayet Sebebi */}
-            <div className="p-3.5 bg-indigo-50/50 rounded-xl border border-indigo-200">
-              <span className="text-[10px] text-indigo-700 font-bold uppercase tracking-wider block flex items-center gap-1">
-                <AlertCircle className="w-3 h-3 text-indigo-600" />
-                <span>Şikayet Sebebi</span>
-              </span>
-              <div className="text-sm font-bold text-indigo-950 mt-1">
-                {item.complaintReason || item.complaintSubject}
+            {item.faultCategory === "Servis İletişimi, Bilgilendirme & Müşteri Hizmetleri" ||
+            item.rootCauseType === "Servis Süreci & İletişim Kusuru" ||
+            item.mainHeader?.includes("İletişim") ||
+            item.mainHeader?.includes("Bilgilendirme") ? (
+              <div className="p-3.5 bg-amber-50/70 rounded-xl border border-amber-300 shadow-2xs">
+                <span className="text-[10px] text-amber-800 font-bold uppercase tracking-wider flex items-center gap-1">
+                  <MessageSquareWarning className="w-3 h-3 text-amber-600" />
+                  <span>Şikayet Sebebi (İnsani / İletişim Kusuru)</span>
+                </span>
+                <div className="text-sm font-bold text-amber-950 mt-1">
+                  {item.complaintReason || item.complaintSubject}
+                </div>
+                <div className="text-[11px] text-amber-800 font-medium mt-0.5">
+                  {item.faultCategory} • <span className="text-amber-700 font-bold">Süreç & Bilgilendirme Kusuru</span>
+                </div>
               </div>
-              <div className="text-[11px] text-indigo-700 mt-0.5">{item.faultCategory}</div>
-            </div>
+            ) : (
+              <div className="p-3.5 bg-indigo-50/50 rounded-xl border border-indigo-200">
+                <span className="text-[10px] text-indigo-700 font-bold uppercase tracking-wider flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3 text-indigo-600" />
+                  <span>Şikayet Sebebi</span>
+                </span>
+                <div className="text-sm font-bold text-indigo-950 mt-1">
+                  {item.complaintReason || item.complaintSubject}
+                </div>
+                <div className="text-[11px] text-indigo-700 mt-0.5">{item.faultCategory}</div>
+              </div>
+            )}
 
             {/* Kronik Risk & Öncelik */}
             <div className="p-3.5 bg-rose-50/60 rounded-xl border border-rose-200">

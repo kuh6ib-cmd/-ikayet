@@ -258,6 +258,9 @@ export function getEnginesForBrandAndModel(brandName: string, modelName: string)
  * Standart Şikayet Sebepleri Listesi
  */
 export const COMPLAINT_REASONS = [
+  "Hararet Yapan Araç Hakkında Bilgi Verilmemesi",
+  "Araç Durumu Hakkında Bilgi Verilmemesi & İletişimsizlik",
+  "Onaysız Servis İşlemi & Süreç Aksaklığı",
   "Külbütör Kapağı Yağ Sızıntısı",
   "Mekatronik Basınç Kaybı & Kavrama Titremesi",
   "Termostat Flanş Çatlağı & Antifriz Eksiltme",
